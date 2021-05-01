@@ -40,7 +40,7 @@ namespace EasyRpt
                 //sql to docx(stream)
                 var ms = new MemoryStream();
                 var docx = _Excel.TplToDocx(ms, _Fun.DirRoot + "EasyRptData/" + rpt["TplFile"].ToString()); //ms <-> docx
-                _Excel.ExportBySql(docx, rpt["Sql"].ToString());
+                _Excel.ExportBySql(docx, rpt["Sql"].ToString(), db);
                 docx.Dispose(); //must dispose, or get empty excel !!
                 ms.Position = 0;
 
