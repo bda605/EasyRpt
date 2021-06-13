@@ -27,7 +27,7 @@ namespace EasyRpt
                 //.BuildServiceProvider();
 
             //locale & user info for base component
-            services.AddSingleton<IBaseResService, BaseResService>();
+            //services.AddSingleton<IBaseResService, BaseResService>();
             services.AddSingleton<IBaseUserService, BaseUserService>();
 
             //ado.net for mssql
@@ -35,8 +35,8 @@ namespace EasyRpt
             services.AddTransient<DbCommand, SqlCommand>();
 
             //initial _Fun by mssql
-            IServiceProvider di = services.BuildServiceProvider();
-            _Fun.Init(di, DbTypeEnum.MSSql);
+            IServiceProvider diBox = services.BuildServiceProvider();
+            _Fun.Init(false, diBox, DbTypeEnum.MSSql);
 
             //Console.WriteLine("Hello World!");
             _Log.Info("EasyRpt Start.");
