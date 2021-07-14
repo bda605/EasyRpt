@@ -13,35 +13,32 @@ namespace EasyRpt
     {
         static void Main(string[] args)
         {
+            //1.initial & load EasyRptConfig.json
             IConfiguration configBuild = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("EasyRptConfig.json", optional: true, reloadOnChange: true)
                 .Build();
 
-            //appSettings "FunConfig" section -> _Fun.Config
+            //2.appSettings "FunConfig" section -> _Fun.Config
             var config = new ConfigDto();
             configBuild.GetSection("FunConfig").Bind(config);
             _Fun.Config = config;
 
-            //setup our DI
+            //3.setup our DI
             var services = new ServiceCollection();
-                //.BuildServiceProvider();
 
-            //locale & user info for base component
-            //services.AddSingleton<IBaseResService, BaseResService>();
+            //4.base user info for base component
             services.AddSingleton<IBaseUserService, BaseUserService>();
 
-            //ado.net for mssql
+            //5.ado.net for mssql
             services.AddTransient<DbConnection, SqlConnection>();
             services.AddTransient<DbCommand, SqlCommand>();
 
-            //initial _Fun by mssql
+            //6.initial _Fun by mssql
             IServiceProvider diBox = services.BuildServiceProvider();
-            _Fun.Init(false, diBox, DbTypeEnum.MSSql);
+            _Fun.Init(false, diBox);
 
-            //Console.WriteLine("Hello World!");
-            _Log.Info("EasyRpt Start.");
+            //7.run main 
             new MyService().Run();
-            _Log.Info("EasyRpt End.");
         }
     }
 }
