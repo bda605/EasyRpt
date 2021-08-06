@@ -45,9 +45,9 @@ namespace EasyRpt
                 var docx = _Excel.GetMsDocxByFile(_Fun.DirRoot + "EasyRptData/" + rpt["TplFile"].ToString(), ms); //ms <-> docx
                 _Excel.DocxBySql(rpt["Sql"].ToString(), docx, 1, db);
                 docx.Dispose(); //must dispose, or get empty excel !!
-                ms.Position = 0;
 
                 //4.set attachment
+                ms.Position = 0;
                 Attachment attach = new Attachment(ms, new ContentType(ContentTypeEstr.Excel));
                 attach.Name = rptName + ".xlsx";
                 msg.Attachments.Add(attach);

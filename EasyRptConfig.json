@@ -1,4 +1,5 @@
 {
+  /*
   "Logging": {
     "LogLevel": {
       "Default": "Information",
@@ -7,14 +8,15 @@
     }
   },
   "AllowedHosts": "*",
+  */
 
   "FunConfig": {
-    "SystemName": "EasyRpt系統",
+    "SystemName": "EasyRpt System",
     "Db": "data source=(localdb)\\mssqllocaldb;initial catalog=Hr;integrated security=True;multipleactiveresultsets=True;max pool size=1000;",
     "Locale": "zh-TW",
     "LogSql": "true",
     "LogDebug": "true",
     /* Smtp: 0(Host),1(Port),2(Ssl),3(Id),4(Pwd),5(FromEmail),6(FromName) */
-    "Smtp": "smtp.gmail.com,587,true,test66tw@gmail.com,googletest123,service@corp.com,Help Desk"
+    "Smtp": "smtp.gmail.com,587,true,xxx@gmail.com,xxx,service@corp.com,Help Desk"
   }
 }
