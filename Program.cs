@@ -6,12 +6,13 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace EasyRpt
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             //1.initial & load EasyRptConfig.json
             IConfiguration configBuild = new ConfigurationBuilder()
@@ -38,7 +39,7 @@ namespace EasyRpt
             _Fun.Init(false, diBox);
 
             //7.run main 
-            new MyService().Run();
+            await new MyService().RunAsync();
         }
     }
 }

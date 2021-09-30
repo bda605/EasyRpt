@@ -4,20 +4,21 @@ using Base.Services;
 using System.IO;
 using System.Net.Mail;
 using System.Net.Mime;
+using System.Threading.Tasks;
 
 namespace EasyRpt
 {
     public class MyService
     {
-        public void Run()
+        public async Task RunAsync()
         {
             const string preLog = "EasyRpt: ";
-            _Log.Info(preLog + "Start.");
+            await _Log.InfoAsync(preLog + "Start.");
 
             #region 1.read XpEasyRpt rows
             var info = "";
             var db = new Db();
-            var rpts = db.GetJsons("select * from dbo.XpEasyRpt where Status=1");
+            var rpts = await db.GetJsonsAsync("select * from dbo.XpEasyRpt where Status=1");
             if (rpts == null)
             {
                 info = "No XpEasyRpt Rows";
@@ -43,7 +44,7 @@ namespace EasyRpt
                 //3.sql to Memory Stream docx
                 var ms = new MemoryStream();
                 var docx = _Excel.GetMsDocxByFile(_Fun.DirRoot + "EasyRptData/" + rpt["TplFile"].ToString(), ms); //ms <-> docx
-                _Excel.DocxBySql(rpt["Sql"].ToString(), docx, 1, db);
+                await _Excel.DocxBySqlAsync(rpt["Sql"].ToString(), docx, 1, db);
                 docx.Dispose(); //must dispose, or get empty excel !!
 
                 //4.set attachment
@@ -56,16 +57,17 @@ namespace EasyRpt
                 _Email.SendByMsgSync(msg, smtp);    //sync send for stream attachment !!
                 ms.Close(); //close after send email, or get error: cannot access a closed stream !!
 
-                _Log.Info(preLog + "Send " + rptName);
+                await _Log.InfoAsync(preLog + "Send " + rptName);
             }
 
             #region close db & log
         lab_exit:
             if (db != null)
-                db.Dispose();
+                await db.DisposeAsync();
             if (info != "")
-                _Log.Info(preLog + info);
-            _Log.Info(preLog + "End.");
+                await _Log.InfoAsync(preLog + info);
+
+            await _Log.InfoAsync(preLog + "End.");
             #endregion
         }
 
