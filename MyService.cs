@@ -43,7 +43,7 @@ namespace EasyRpt
 
                 //3.sql to Memory Stream docx
                 var ms = new MemoryStream();
-                var docx = _Excel.GetMsDocxByFile(_Fun.DirRoot + "EasyRptData/" + rpt["TplFile"].ToString(), ms); //ms <-> docx
+                var docx = _Excel.FileToMsDocx(_Fun.DirRoot + "EasyRptData/" + rpt["TplFile"].ToString(), ms); //ms <-> docx
                 await _Excel.DocxBySqlAsync(rpt["Sql"].ToString(), docx, 1, db);
                 docx.Dispose(); //must dispose, or get empty excel !!
 
@@ -54,7 +54,7 @@ namespace EasyRpt
                 msg.Attachments.Add(attach);
 
                 //5.send email
-                _Email.SendByMsgSync(msg, smtp);    //sync send for stream attachment !!
+                await _Email.SendByMsgAsync(msg, smtp);    //sync send for stream attachment !!
                 ms.Close(); //close after send email, or get error: cannot access a closed stream !!
 
                 await _Log.InfoAsync(preLog + "Send " + rptName);
